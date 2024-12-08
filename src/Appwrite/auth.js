@@ -5,47 +5,51 @@ export class AuthService {
     client = new Client();
     account;
 
-    constructor(){
+    constructor() {
         this.client
             .setEndpoint(conf.appwriteUrl)
             .setProject(conf.appwriteProjectId)
-        
+
         this.account = new Account(this.client)
     }
 
-    async createAccount({email, password, name}){
+    async createAccount({ email, password, name, profilePicture }) {
         try {
-            const userAccount = await this.account.create(ID.unique(), email,password,name)
-            if (userAccount) {
-                return console.log("Created");
-                
-            } else {
-                return console.log("not created");
-                
+            const userAccount = await this.account.create(ID.unique(), email, password, name)
+            
+            await this.account.createEmailPasswordSession(email, password);
+            if (profilePicture) {
+                await this.account.updatePrefs({ profilePicture });
+                console.log("Profile picture ID saved in preferences:", profilePicture);
             }
+            await this.account.deleteSessions()
+
+
+            return userAccount
+
         } catch (error) {
             console.log("Failed to create Account: ", error);
         }
     };
 
-    async login({email,password}){
+    async login({ email, password }) {
         try {
             return await this.account
-                             .createEmailPasswordSession(email,password);
+                .createEmailPasswordSession(email, password);
         } catch (error) {
-            console.log("User login Failed: ", error); 
+            console.log("User login Failed: ", error);
         }
     };
 
-    async getCurrentUser(){
+    async getCurrentUser() {
         try {
             return await this.account.get()
         } catch (error) {
-            console.log("Failed to get user: ", error);   
+            console.log("Failed to get user: ", error);
         }
     };
 
-    async logout(){
+    async logout() {
         try {
             await this.account.deleteSessions()
         } catch (error) {
@@ -54,6 +58,6 @@ export class AuthService {
     };
 }
 
-const service = new AuthService()
+const authService = new AuthService()
 
-export default service
+export default authService

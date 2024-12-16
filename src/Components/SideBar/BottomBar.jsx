@@ -12,7 +12,6 @@ import { useDispatch } from 'react-redux'
 import authService from "../../Appwrite/auth"
 
 
-
 function BottomBar() {
 
     const dispatch = useDispatch()
@@ -38,19 +37,19 @@ function BottomBar() {
 
     return (
         <div className="bg-customOrange text-white flex justify-center gap-6 p-2 w-full fixed bottom-0 md:hidden">
-            <a href="/home">
+            <a href="/" className='hover:bg-white hover:text-orange-400'>
                 <VscHome style={{ width: '40px', height: '40px' }} />
             </a>
-            <a href="/profile" className="text-orange-400">
-                <RiAccountPinCircleLine style={{ width: '40px', height: '40px', color: 'white' }} />
+            <a href="/profile" className='hover:bg-white hover:text-orange-400 text-white'>
+                <RiAccountPinCircleLine style={{ width: '40px', height: '40px' }} />
             </a>
-            <a href="#" className="text-orange-400">
-                <IoSettingsOutline style={{ width: '40px', height: '40px', color: 'white' }} />
+            <a href="/settings" className='hover:bg-white hover:text-orange-400 text-white'>
+                <IoSettingsOutline style={{ width: '40px', height: '40px' }} />
             </a>
             <button 
             onClick={logoutHandler}
-             className="text-orange-400">
-                <IoMdLogOut style={{ width: '40px', height: '40px', color: 'white', marginLeft: '26px' }} />
+            className='hover:bg-white hover:text-orange-400 text-white'>
+                <IoMdLogOut style={{ width: '40px', height: '40px', marginLeft: '26px' }} />
             </button>
         </div>
     );

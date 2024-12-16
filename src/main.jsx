@@ -7,15 +7,32 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { Login, Signup, AuthLayout } from "./Components/index.js"
 import { Provider } from 'react-redux'
 import store from "./Store/Store.js"
+import Home from './Components/Home.jsx'
+import Profile from './Components/Profile.jsx'
+import Settings from './Components/Settings.jsx'
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: (
-      <AuthLayout authentication={true}>
-      <App />
+      <AuthLayout>
+        <App />
       </AuthLayout>
-    )
+    ),
+    children: [
+      {
+        path: '/',
+        element: <Home/>
+      },
+      {
+        path: '/profile',
+        element: <Profile/>
+      },
+      {
+        path: '/settings',
+        element: <Settings/>
+      }
+    ]
   },
   {
     path: "/login",
@@ -23,7 +40,7 @@ const router = createBrowserRouter([
       <AuthLayout authentication={false}>
         <Login />
       </AuthLayout>
-    )
+    ),
   },
   {
     path: "/signup",
@@ -31,8 +48,8 @@ const router = createBrowserRouter([
       <AuthLayout authentication={false}>
         <Signup />
       </AuthLayout>
-    )
-  }
+    ),
+  },
 ]);
 
 

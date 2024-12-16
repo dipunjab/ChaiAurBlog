@@ -5,6 +5,8 @@ import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import authService from "../../Appwrite/auth"
 
+import { NavLink } from 'react-router-dom';
+
 function Sidebar() {
 
   const dispatch = useDispatch()
@@ -42,24 +44,34 @@ function Sidebar() {
         </div>
 
         <nav className="flex flex-col gap-2 w-full">
-          <a
-            href="#"
-            className="py-2 px-4 rounded bg-white text-orange-400 font-bold text-sm"
-          >
+          <NavLink
+            to="/"
+            className={({ isActive }) =>
+              isActive
+                ? "py-2 px-4 rounded bg-white text-orange-400 text-sm font-bold"
+                : "py-2 px-4 rounded hover:bg-white hover:text-orange-400 text-sm"
+            }          >
             Home
-          </a>
-          <a
-            href="#"
-            className="py-2 px-4 rounded hover:bg-white hover:text-orange-400 text-sm"
+          </NavLink>
+          <NavLink
+            to="/profile"
+            className={({ isActive }) =>
+              isActive
+                ? "py-2 px-4 rounded bg-white text-orange-400 text-sm font-bold"
+                : "py-2 px-4 rounded hover:bg-white hover:text-orange-400 text-sm"
+            }
           >
             Profile
-          </a>
-          <a
-            href="#"
-            className="py-2 px-4 rounded hover:bg-white hover:text-orange-400 text-sm"
-          >
+          </NavLink>
+          <NavLink
+            to="/settings"
+            className={({ isActive }) =>
+              isActive
+                ? "py-2 px-4 rounded bg-white text-orange-400 text-sm font-bold"
+                : "py-2 px-4 rounded hover:bg-white hover:text-orange-400 text-sm"
+            }          >
             Settings
-          </a>
+          </NavLink>
 
           <button
             onClick={logoutHandler}

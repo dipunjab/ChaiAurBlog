@@ -1,19 +1,13 @@
 import React from 'react';
-import Sidebar from './SideBar/Sidebar';
-import BottomBar from './SideBar/BottomBar';
+import AddPost from './AddPost/AddPost';
 
 function Home() {
   return (
-    <div className="flex flex-col h-screen">
-      {/* //bar for desktop and mobile */}
-      <div className="hidden md:block">
-        <Sidebar /> 
-      </div>
-      <div className="block md:hidden">
-        <BottomBar />  
-      </div>
-
-      {/* //Content */}
+    <div className='p-32'>
+     <div>
+      <AddPost/>
+     </div>
+       Home
 
     </div>
   );

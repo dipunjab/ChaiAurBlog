@@ -1,10 +1,11 @@
-import { Outlet} from 'react-router-dom'
+import { Outlet } from 'react-router-dom'
 import './App.css'
 import authService from './Appwrite/auth';
 import { useDispatch } from 'react-redux';
-import { login , logout} from './Store/authSlice';
+import { login, logout } from './Store/authSlice';
 import { useEffect, useState } from 'react';
 import Bar from './Components/SideBar/Bar';
+import Title from './Components/Title';
 
 
 function App() {
@@ -13,23 +14,26 @@ function App() {
 
   useEffect(() => {
     authService.getCurrentUser()
-    .then((userData) => {
-      if (userData) {
-        dispatch(login({userData}))
-      } else {
-        dispatch(logout())
-      }
-    })
-    .finally(() => setLoading(false))
+      .then((userData) => {
+        if (userData) {
+          dispatch(login({ userData }))
+        } else {
+          dispatch(logout())
+        }
+      })
+      .finally(() => setLoading(false))
   }, [])
 
 
 
-  return  (
-    <div className="md:grid md:grid-cols-[240px_1fr] h-screen bg-orange-50">
-       <Bar/>
-      {!loading ? <Outlet/> : "...Loading"}
-      
+  return (
+    <div className="md:grid md:grid-cols-[240px_1fr] h-screen">
+      <Bar />
+      <div>
+        <Title/>
+        {!loading ? <Outlet /> : "...Loading"}
+      </div>
+
     </div>
   )
 }

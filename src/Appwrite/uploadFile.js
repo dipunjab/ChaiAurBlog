@@ -37,7 +37,7 @@ export class UploadService {
         }
     }
 
-    async filePreview(fileID){
+     filePreview(fileID){
         return this.storage.getFilePreview(
             conf.appwriteBucketId,
             fileID

@@ -30,9 +30,9 @@ const ModalPost = ({close , addNewPost}) => {
     let userName = await authService.getCurrentUser().then((userData)=> (userData.name))
     let userPFP = await authService.getCurrentUser().then((userData)=> (userData.prefs?.profilePicture))
 
-    console.log(userName);
+    // console.log(userName);
     
-    console.log(userPFP)
+    // console.log(userPFP)
 
     try {
       let imageid = null;
@@ -43,7 +43,7 @@ const ModalPost = ({close , addNewPost}) => {
 
       const newPost = await service.createPost({
         content,
-        image: [imageid],
+        image: imageid,
         status: "published",
         userID: userId,
         userName: userName,

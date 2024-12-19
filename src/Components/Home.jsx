@@ -18,8 +18,12 @@ function Home() {
   // console.log(posts)
 
   const addNewPost = (newPost) => {
-    setPosts((prevPosts) => [newPost, ...prevPosts]); // Add the new post at the top of the list
+    setPosts((prevPosts) => [newPost, ...prevPosts]); 
   };
+
+  const deletePostFromList = (postID) => {
+    setPosts((prevPosts) => prevPosts.filter((post) => post.$id !== postID));
+};
 
   return (
     <div className='p-3 flex flex-col justify-center items-center mt-10'>
@@ -31,7 +35,7 @@ function Home() {
         <p>No posts available</p>  
       ) : (
         posts.sort((a,b)=>  new Date(b.$createdAt) - new Date(a.$createdAt)).map((post) => (
-          <PostCard key={post.$id} {...post} />  
+          <PostCard key={post.$id} {...post} deletePostFromList={deletePostFromList} />  
         ))
       )}
     </div>

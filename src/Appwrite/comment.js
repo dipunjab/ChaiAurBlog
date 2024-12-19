@@ -12,7 +12,7 @@ export class CommentService{
         this.databases = new Databases(this.client)
     }
 
-    async createComment({postID, userID, content}){
+    async createComment({postID, userID, content, userName, userPFP}){
         try {
             return await this.databases.createDocument(
                 conf.appwriteDatabaseId,
@@ -21,7 +21,9 @@ export class CommentService{
                 {
                     content,
                     postID,
-                    userID
+                    userID,
+                    userName,
+                    userPFP
                 }
             )
         } catch (error) {

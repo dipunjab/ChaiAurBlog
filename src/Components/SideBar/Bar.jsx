@@ -8,7 +8,7 @@ function Bar() {
             <div className="hidden md:block">
                 <Sidebar />
             </div>
-            <div className="block md:hidden">
+            <div className=" block md:hidden">
                 <BottomBar />
             </div>
         </>

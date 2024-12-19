@@ -1,16 +1,26 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { BiLike } from "react-icons/bi";
 import { TfiCommentsSmiley } from "react-icons/tfi";
 
 import uploadService from '../../Appwrite/uploadFile';
+import uploadPFPService from '../../Appwrite/uploadPFP';
 
 
-function PostCard({ content, image, $createdAt }) {
-
+function PostCard({ content, image, $createdAt, userName, userPFP }) {
 
     const formattedDate = new Date($createdAt).toLocaleDateString();
     const formattedTime = new Date($createdAt).toLocaleTimeString();
+
+    let [ pfp , setPfp] = useState("")
+
+    useEffect(()=>{
+        const profilePicture = async ()=>{
+            let pf = await uploadPFPService.filePreview(userPFP)
+            setPfp(pf)
+        }
+        profilePicture()
+    },[])
 
 
     return (
@@ -18,11 +28,11 @@ function PostCard({ content, image, $createdAt }) {
             <div className="flex flex-row items-start mx-2 md:gap-96 ">
                 <div className='flex'>
                     <img
-                        src={null}
+                        src={pfp || null}
                         alt="Profile"
                         className="rounded-full md:w-12 md:h-12 w-8 h-8"
                     />
-                    <p className="text-left font-bold">User</p>
+                    <p className="text-left font-bold">{userName || "USER"}</p>
                 </div>
 
                 <div className='ml-14'>

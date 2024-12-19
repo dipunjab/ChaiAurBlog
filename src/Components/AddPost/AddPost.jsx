@@ -4,7 +4,7 @@ import { IoAddCircle } from "react-icons/io5";
 import ModalPost from './ModalPost';
 
 
-function AddPost() {
+function AddPost({addNewPost}) {
 
     let [isModal , setModal] = useState(false)
 
@@ -22,7 +22,7 @@ function AddPost() {
         </div>
       </div>
     </div>
-       {isModal && <ModalPost close={handleModal}/>}
+       {isModal && <ModalPost close={handleModal} addNewPost={addNewPost}/>}
       </>
   )
 }

@@ -12,14 +12,14 @@ export class Service{
         this.databases = new Databases(this.client)
     }
 
-    async createPost({content, image, status, userID}){
+    async createPost({content, image, status, userID, userName, userPFP}){
         try {
             return await this.databases.createDocument(
                 conf.appwriteDatabaseId,
                 conf.appwritePostCollectionId,
                 ID.unique(),
                 {
-                    content,image,status,userID
+                    content,image,status,userID, userName, userPFP
                 }
             )
         } catch (error) {

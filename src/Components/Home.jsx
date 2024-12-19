@@ -17,16 +17,20 @@ function Home() {
 
   // console.log(posts)
 
+  const addNewPost = (newPost) => {
+    setPosts((prevPosts) => [newPost, ...prevPosts]); // Add the new post at the top of the list
+  };
+
   return (
     <div className='p-3 flex flex-col justify-center items-center mt-10'>
      <div className='mb-2'>
-      <AddPost/>
+      <AddPost addNewPost={addNewPost}/>
      </div>
        <h1 className='underline'>Feeds</h1>
        {posts.length === 0 ? (
         <p>No posts available</p>  
       ) : (
-        posts.map((post) => (
+        posts.sort((a,b)=>  new Date(b.$createdAt) - new Date(a.$createdAt)).map((post) => (
           <PostCard key={post.$id} {...post} />  
         ))
       )}

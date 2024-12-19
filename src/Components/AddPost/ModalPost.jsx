@@ -4,7 +4,7 @@ import uploadService from "../../Appwrite/uploadFile"
 import authService from "../../Appwrite/auth"
 import service from "../../Appwrite/post"
 
-const ModalPost = ({close}) => {
+const ModalPost = ({close , addNewPost}) => {
 
   const [content, setContent] = useState("");
   const [image, setImage] = useState("")
@@ -27,7 +27,12 @@ const ModalPost = ({close}) => {
     setError("");
 
     let userId = await authService.getCurrentUser().then((userData)=> (userData.$id))
+    let userName = await authService.getCurrentUser().then((userData)=> (userData.name))
+    let userPFP = await authService.getCurrentUser().then((userData)=> (userData.prefs?.profilePicture))
 
+    console.log(userName);
+    
+    console.log(userPFP)
 
     try {
       let imageid = null;
@@ -36,12 +41,16 @@ const ModalPost = ({close}) => {
         imageid = upload?.$id
       }
 
-      await service.createPost({
+      const newPost = await service.createPost({
         content,
         image: [imageid],
         status: "published",
-        userID: userId
+        userID: userId,
+        userName: userName,
+        userPFP: userPFP
       })
+
+      addNewPost(newPost)
 
       setContent("");
       setImage(null);

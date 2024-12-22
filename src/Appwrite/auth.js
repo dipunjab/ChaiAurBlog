@@ -29,6 +29,33 @@ export class AuthService {
         }
     }
 
+    async updateUserInfo({newEmail, newName, newPassword, newPFP, currentPassword}) {
+        try {
+            if (newName) {
+              await this.account.updateName(newName);
+              console.log('Name updated successfully');
+            }
+        
+            if (newEmail && currentPassword) {
+              await this.account.updateEmail(newEmail, currentPassword);
+              console.log('Email updated successfully');
+            }
+        
+            if (newPassword && currentPassword) {
+              await this.account.updatePassword(newPassword, currentPassword);
+              console.log('Password updated successfully');
+            }
+        
+            if (newPFP) {
+              await this.account.updatePrefs({profilePicture: newPFP});
+              console.log('ProfilePicture updated successfully');
+            }
+          } catch (error) {
+            console.error('Error updating user details:', error.message);
+          }
+        
+    }
+
     async login({ email, password }) {
         try {
             return await this.account.createEmailPasswordSession(email, password);

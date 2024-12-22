@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 //icons
 import { VscHome } from "react-icons/vsc";
@@ -10,11 +10,11 @@ import { login, logout } from '../../Store/authSlice'
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import authService from "../../Appwrite/auth"
-
+import uploadPFPService from '../../Appwrite/uploadPFP';
 
 function BottomBar() {
-
-    const dispatch = useDispatch()
+      const [pfp, setPfp] = useState(''); 
+        const dispatch = useDispatch()
 
     const logoutHandler = () => {
         authService.logout()
@@ -24,14 +24,27 @@ function BottomBar() {
     }
 
     useEffect(() => {
-        authService.getCurrentUser()
-            .then((userData) => {
-                if (userData) {
-                    dispatch(login({ userData }))
-                } else {
-                    dispatch(logout())
+            const fetchUserData = async () => {
+                try {
+                  const userData = await authService.getCurrentUser();
+          
+                  if (userData) {
+                    dispatch(login({ userData })); 
+          
+                    const profilePictureID = userData.prefs?.profilePicture;
+                    if (profilePictureID) {
+                      const filePreviewUrl = await uploadPFPService.filePreview(profilePictureID);
+                      setPfp(filePreviewUrl); 
+                    }
+                  } else {
+                    dispatch(logout());
+                  }
+                } catch (error) {
+                  console.error("Failed to fetch user data:", error);
                 }
-            })
+              };
+          
+              fetchUserData();
     }, [])
 
 
@@ -41,7 +54,7 @@ function BottomBar() {
                 <VscHome style={{ width: '40px', height: '40px' }} />
             </a>
             <a href="/profile" className='hover:bg-white hover:text-orange-400 text-white'>
-                <RiAccountPinCircleLine style={{ width: '40px', height: '40px' }} />
+            {pfp  ? <img src={pfp} style={{ width: '40px', height: '40px', borderRadius: '50px'}} /> : <RiAccountPinCircleLine style={{ width: '40px', height: '40px' }} />}
             </a>
             <a href="/settings" className='hover:bg-white hover:text-orange-400 text-white'>
                 <IoSettingsOutline style={{ width: '40px', height: '40px' }} />

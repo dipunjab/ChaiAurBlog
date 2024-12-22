@@ -12,6 +12,7 @@ import uploadPFPService from '../../Appwrite/uploadPFP';
 
 function Sidebar() {
   const [userName, setUserName] = useState(""); 
+  const [email, setEmail] = useState(""); 
   const [pfp, setPfp] = useState("https://via.placeholder.com/50"); // Default profile picture
   const dispatch = useDispatch();
 
@@ -28,15 +29,15 @@ function Sidebar() {
         const userData = await authService.getCurrentUser();
 
         if (userData) {
-          setUserName(userData.name); // Update username in state
-          dispatch(login({ userData })); // Dispatch login action
-
-          // Fetch profile picture if available
+          setUserName(userData.name);
+          setEmail(userData.email);
+          
           const profilePictureID = userData.prefs?.profilePicture;
           if (profilePictureID) {
             const filePreviewUrl = await uploadPFPService.filePreview(profilePictureID);
-            setPfp(filePreviewUrl); // Update PFP in state
+            setPfp(filePreviewUrl); 
           }
+          dispatch(login({ userData })); 
         } else {
           dispatch(logout());
         }
@@ -46,7 +47,7 @@ function Sidebar() {
     };
 
     fetchUserData();
-  }, [dispatch]);
+  }, [dispatch, userName, email,pfp]);
 
   return (
     <div>
@@ -58,6 +59,7 @@ function Sidebar() {
             className="rounded-full w-24 h-24"
           />
           <p className="text-left  font-bold">{userName || "Guest"}</p>
+          <p className="text-left  font-bold text-sm">{email || "Guest.com"}</p>
         </div>
 
         <nav className="flex flex-col gap-2 w-full">

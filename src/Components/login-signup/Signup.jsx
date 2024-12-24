@@ -8,12 +8,14 @@ import authService from "../../Appwrite/auth"
 import uploadPFPService from '../../Appwrite/uploadPFP';
 
 import { useForm } from 'react-hook-form';
-
+import chaigip from "../../assets/chaigif.gif"
 
 function Signup() {
 
   //handling selected pfp preview
   const [selectedImage, setSelectedImage] = useState(pfp);
+  const [loading, setLoading] = useState(false)
+
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -33,6 +35,7 @@ function Signup() {
 
   const create = async (data) => {
     try {
+      setLoading(true)
       let pfpID = null;
 
       if (data.profilePicture && data.profilePicture.length > 0) {
@@ -60,6 +63,8 @@ function Signup() {
     } catch (error) {
       console.error("Account creation error:", error);
       alert(error.message || "An error occurred");
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -67,6 +72,13 @@ function Signup() {
 
   return (
     <PageLayout>
+      {loading && 
+      <div className="fixed inset-0 z-10 flex items-center justify-center p-4 bg-gray-900 bg-opacity-50">
+         <div className='bg-customOrange p-3'> 
+            <h1> Preparing Your chai.... <img src={chaigip} alt="" /></h1>
+         </div>
+        </div>
+      }
       <h1 className="absolute left-1/2 sm:text-2xl font-bold text-center">Register</h1>
       <div className="flex flex-col md:flex-row h-full md:space-x-8">
 

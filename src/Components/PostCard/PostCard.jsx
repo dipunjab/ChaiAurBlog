@@ -11,11 +11,14 @@ import likeService from "../../Appwrite/like"
 import Comment from './Comment';
 import service from '../../Appwrite/post';
 import commentService from '../../Appwrite/comment';
+import ShowComments from './ShowComments';
 
 function PostCard({ $id, content, image, $createdAt, userName, userPFP, userID, deletePostFromList }) {
 
     const formattedDate = new Date($createdAt).toLocaleDateString();
     const formattedTime = new Date($createdAt).toLocaleTimeString();
+
+    const [loading, setLoading] = useState(false)
 
     let [pfp, setPfp] = useState("")
 
@@ -38,15 +41,22 @@ function PostCard({ $id, content, image, $createdAt, userName, userPFP, userID, 
 
     useEffect(() => {
         const fetchLikes = async () => {
-            await authService.getCurrentUser().then((user) => setCurrUSerId(user.$id));
-
-            const likeData = await likeService.getLikesByPost(postID);
-            setLikeCount(likeData.total);
-
-            const userLike = await likeService.getUserLikeOnPost(currUserID, postID);
-            if (userLike) {
-                setLiked(true);
-                setLikeID(userLike.$id);
+            try {
+                setLoading(true)
+                await authService.getCurrentUser().then((user) => setCurrUSerId(user.$id));
+                const likeData = await likeService.getLikesByPost(postID);
+                setLikeCount(likeData.total);
+    
+                const userLike = await likeService.getUserLikeOnPost(currUserID, postID);
+                if (userLike) {
+                    setLiked(true);
+                    setLikeID(userLike.$id);
+                }
+            } catch (error) {
+                setLoading(false)
+                console.log(error);
+            } finally {
+                setLoading(false)
             }
         };
         fetchLikes();
@@ -54,15 +64,23 @@ function PostCard({ $id, content, image, $createdAt, userName, userPFP, userID, 
 
 
     const toggleLike = async () => {
-        if (liked) {
-            await likeService.unlikePost(likeID);
-            setLiked(false);
-            setLikeCount(prev => prev - 1);
-        } else {
-            const likeRes = await likeService.likePost({  userID:currUserID, postID });
-            setLiked(true);
-            setLikeCount(prev => prev + 1);
-            setLikeID(likeRes.$id);
+        try {
+            setLoading(true)
+            if (liked) {
+                await likeService.unlikePost(likeID);
+                setLiked(false);
+                setLikeCount(prev => prev - 1);
+            } else {
+                const likeRes = await likeService.likePost({  userID:currUserID, postID });
+                setLiked(true);
+                setLikeCount(prev => prev + 1);
+                setLikeID(likeRes.$id);
+            }
+        } catch (error) {
+            console.log("Error likes",error);
+            setLoading(false)
+        } finally {
+            setLoading(false)
         }
     };
 
@@ -94,6 +112,12 @@ function PostCard({ $id, content, image, $createdAt, userName, userPFP, userID, 
             deletePostFromList($id)
             console.log("post delted");
         }
+    }
+
+    let [isCommetnModal , setCommetnModal] = useState(false)
+
+    const handleCommentModal = ()=>{
+      setCommetnModal(!isCommetnModal)
     }
 
 
@@ -130,12 +154,14 @@ function PostCard({ $id, content, image, $createdAt, userName, userPFP, userID, 
             <div className='flex justify-around my-2 mx-2'>
                 <div className='flex md:gap-8 gap-2'>
                     <div onClick={toggleLike} className='flex cursor-pointer'>
+                        {loading ? <p>wait..</p>: null}
                         {!liked ?
                             <BiLike className={`md:w-6 md:h-6`} /> :
                             <FcLike className={`md:w-6 md:h-6`} />}
                         <span>{likeCount}</span>
                     </div>
-                    <TfiCommentsSmiley className='md:w-6 md:h-6' />
+                    {isCommetnModal && <ShowComments close={handleCommentModal} postID={$id}/>}
+                    <TfiCommentsSmiley className='md:w-6 md:h-6'  onClick={handleCommentModal}/>
                     <span>{commentCount}</span>
                 </div>
                 <Comment postID={$id} setCommentCount={setCommentCount}/>

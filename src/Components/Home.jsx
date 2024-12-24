@@ -5,6 +5,7 @@ import service from '../Appwrite/post';
 
 function Home() {
 
+
   const [posts, setPosts] = useState([])
 
   useEffect(()=>{

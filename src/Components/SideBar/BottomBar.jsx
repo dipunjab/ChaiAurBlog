@@ -56,9 +56,6 @@ function BottomBar() {
             <a href="/profile" className='hover:bg-white hover:text-orange-400 text-white'>
             {pfp  ? <img src={pfp} style={{ width: '40px', height: '40px', borderRadius: '50px'}} /> : <RiAccountPinCircleLine style={{ width: '40px', height: '40px' }} />}
             </a>
-            <a href="/settings" className='hover:bg-white hover:text-orange-400 text-white'>
-                <IoSettingsOutline style={{ width: '40px', height: '40px' }} />
-            </a>
             <button 
             onClick={logoutHandler}
             className='hover:bg-white hover:text-orange-400 text-white'>

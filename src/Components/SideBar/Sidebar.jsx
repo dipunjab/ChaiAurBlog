@@ -83,17 +83,6 @@ function Sidebar() {
           >
             Profile
           </NavLink>
-          <NavLink
-            to="/settings"
-            className={({ isActive }) =>
-              isActive
-                ? "py-2 px-4 rounded bg-white text-orange-400 text-sm font-bold"
-                : "py-2 px-4 rounded hover:bg-white hover:text-orange-400 text-sm"
-            }
-          >
-            Settings
-          </NavLink>
-
           <button
             onClick={logoutHandler}
             className="py-2 px-4 rounded hover:bg-white hover:text-orange-400 text-xl font-bold mt-36"

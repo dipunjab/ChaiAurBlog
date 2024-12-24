@@ -3,9 +3,6 @@ import uploadPFPService from "../Appwrite/uploadPFP";
 import authService from "../Appwrite/auth";
 
 
-import service from "../Appwrite/post"
-
-
 
 
 function EditProfile({ close }) {
@@ -26,7 +23,9 @@ function EditProfile({ close }) {
                 setName(userData.name);
                 setEmail(userData.email);
                 setCurrPfp(userData.prefs.profilePicture); 
-                
+
+                const someUSer = await authService.getUSerInfo('675c683d0031768984ce')
+                console.log(someUSer.email);
                 
             } catch (error) {
                 console.error("Error fetching user data:", error);

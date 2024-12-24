@@ -13,15 +13,18 @@ function Login() {
 
   const {register, handleSubmit} = useForm()
 
+  const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
 
   const login = async(data)=>{
+      setLoading(true)
       setError("")
       try {
          const session =  await authService.login(data)
           if (session) {
               const userData = await authService.getCurrentUser()
               if (userData)  dispatch(authLogin(userData))
+              setLoading(false)
               navigate("/")    
           }
       
@@ -54,6 +57,7 @@ function Login() {
               className="border p-3 text-sm rounded-xl sm:rounded-sm sm:w-2/3 focus:border-customOrange"
               placeholder="Enter your email"
               required
+              disabled={loading === true}
             />
             <label htmlFor="password" className="block text-sm font-medium">Password</label>
             <input
@@ -63,8 +67,11 @@ function Login() {
               className="border p-3 text-sm rounded-xl sm:rounded-sm sm:w-2/3 focus:border-customOrange"
               placeholder="Enter your password"
               required
+              disabled={loading === true}
             />
-            <button type="submit" className="bg-customOrange hover:bg-orange-300 text-white p-3 w-2/4 ml-20 h-12 sm:ml-24 md:ml-2 rounded-full transition duration-300 md:w-3/4">Login</button>
+            <button   disabled={loading === true}
+ type="submit" className="bg-customOrange hover:bg-orange-300 text-white p-3 w-2/4 ml-20 h-12 sm:ml-24 md:ml-2 rounded-full transition duration-300 md:w-3/4">{loading === true? "Wait ...": "Login"}
+</button>
           </form>
           <div className="text-center mt-2 md:text-left">
             <p>Don't have an account? <a href="/signup" className="text-orange-600 font-bold">Sign up</a></p>

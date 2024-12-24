@@ -9,7 +9,6 @@ import { Provider } from 'react-redux'
 import store from "./Store/Store.js"
 import Home from './Components/Home.jsx'
 import Profile from './Components/Profile.jsx'
-import Settings from './Components/Settings.jsx'
 
 const router = createBrowserRouter([
   {
@@ -27,10 +26,6 @@ const router = createBrowserRouter([
       {
         path: '/profile',
         element: <Profile/>
-      },
-      {
-        path: '/settings',
-        element: <Settings/>
       }
     ]
   },

@@ -24,8 +24,6 @@ function EditProfile({ close }) {
                 setEmail(userData.email);
                 setCurrPfp(userData.prefs.profilePicture); 
 
-                const someUSer = await authService.getUSerInfo('675c683d0031768984ce')
-                console.log(someUSer.email);
                 
             } catch (error) {
                 console.error("Error fetching user data:", error);
@@ -62,7 +60,7 @@ function EditProfile({ close }) {
 
             // dispatch(login({userData: updatedUserData}))
 
-            if (currPfp) {
+            if (currPfp && pfp) {
                 await uploadPFPService.deleteFile(currPfp);  
                 console.log("Deleted succeffully");
                 
@@ -101,7 +99,9 @@ function EditProfile({ close }) {
                 </div>
 
                 <div>
-                    <h2>Email Address</h2>
+                
+                    <h2>Email Address <span className='text-red-700 font-mono text-xs'>curr-password req</span></h2>
+                    
                     <input
                         type="email"
                         value={email}

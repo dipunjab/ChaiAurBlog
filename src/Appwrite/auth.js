@@ -37,7 +37,7 @@ export class AuthService {
             }
         
             if (newEmail && currentPassword) {
-              await this.account.updateEmail(newEmail, currentPassword);
+              await this.account.updateEmail(newEmail);
               console.log('Email updated successfully');
             }
         
